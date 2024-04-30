@@ -42,3 +42,19 @@ Team.list = async (params, result) => {
         throw(err);
     }
 };
+
+Team.checkDuplicateName = async (name) => {
+    try {
+        let result = await sql.query("SELECT * FROM teams WHERE name = ?", [name]);
+        if (result.length) {
+            return Promise.reject("duplicate name");
+        } else {
+            return Promise.resolve("name good");
+        }
+    } catch (err) {
+        console.log("error: ", err);
+        throw(err);
+    }
+}
+
+module.exports = Team;
