@@ -1,6 +1,15 @@
 module.exports = app => {
     const teams = require("../controllers/team.controller.js");
 
+    app.get("/teams", async (req, res) => {
+        try {
+            await teams.list(req, res);
+        } catch (err) {
+            res.send(err);
+            console.log(err.message);
+        }
+    })
+
     app.post("/teams", teams.validate('createTeam'), async (req, res) => {
         try {
             await teams.create(req, res);

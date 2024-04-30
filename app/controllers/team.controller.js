@@ -56,3 +56,18 @@ exports.create = async(req, res) => {
         throw(err);
     }
 }
+
+exports.list = async (req, res) => {
+    const params = {
+        sortCol: req.query.sortCol || "name",
+        sortDir: req.query.sortDir || "asc",
+        filterStr: req.query.filterStr || "",
+        filterCol: req.query.filterCol || "",
+    }
+
+    try {
+        res.send(await Team.list(params));
+    } catch (ex) {
+        throw (ex);
+    }
+}
