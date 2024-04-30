@@ -23,3 +23,36 @@ exports.validate = (method) => {
         }
     }
 }
+
+exports.create = async(req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        res.status(422).json({
+            errors: errors.array()
+        });
+        return false;
+    }
+
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+        return false;
+    }
+
+    const team = new Team({
+        name: req.body.name,
+        coach_id: req.body.coach_id,
+        league_id: req.body.league_id,
+        notes: req.body.notes,
+        motto: req.body.motto
+    });
+
+    try {
+        let result = await Team.create(team);
+        res.status(201).send(result);
+    } catch (err) {
+        throw(err);
+    }
+}
